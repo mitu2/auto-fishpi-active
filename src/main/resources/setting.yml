@@ -1,0 +1,38 @@
+chat-room:
+  client-id: Other/<Mitu2 Technology>
+  queues:
+    - type: ONCE
+      messages:
+        - "![img](https://file.fishpi.cn/2025/02/01BE679FB0D1E665049A18B7BE7E5B5B-9bdc3c13.gif)<br />美好的一天从小B宅子开始"
+        - 凌 去探索
+        - 小冰 去打劫
+        - 鸽 行行好吧
+    - type: REPEAT
+      messages:
+        - 凌 活跃
+        - 凌 今日运势
+        - 凌 今日水分
+        - 凌 信息
+        - 凌 笑话
+        - 凌 看看金价
+        - 乌拉
+        - 鸽 勇士题
+        - 凌 等级
+        - 凌 报时
+    - type: WEEK
+      condition: 4
+      messages:
+        - 凌 V50
+    - type: WEEK
+      condition: 5
+      messages:
+        - 凌 TGIF
+    - type: WEEK
+      condition: 6
+      messages:
+        - 凌 窝囊费
+fishpi-client:
+  base-url: https://fishpi.cn
+  user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0
+  username: mitu2
+  password: You Password
