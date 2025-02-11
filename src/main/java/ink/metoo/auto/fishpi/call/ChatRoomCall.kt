@@ -1,6 +1,7 @@
 package ink.metoo.auto.fishpi.call
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import ink.metoo.auto.fishpi.ClientCaches
 import ink.metoo.auto.fishpi.Requests
 import ink.metoo.auto.fishpi.Settings
@@ -47,7 +48,7 @@ object ChatRoomCall {
     )
 
 
-    data class RedEnvelopesBody(
+    data class RedPacketBody(
         val msg: String? = null,
         val money: Int = 32,
         val count: Int = 1,
@@ -61,9 +62,24 @@ object ChatRoomCall {
 
     private val gson = Gson()
 
-    fun sendRedEnvelopes(body: RedEnvelopesBody): CodeResult {
+    fun sendRedPacket(body: RedPacketBody): CodeResult {
         val json = gson.toJson(body)
         return sendMessage("[redpacket]${json}[/redpacket]")
     }
+
+    class OpenRedPacketBody : BaseBody() {
+        var oId: String = ""
+        var gesture: String? = null
+    }
+
+    fun openRedPacket(oId: String, gesture: String? = null) = Requests.sendJsonRequest<JsonObject> (
+        path = "/chat-room/red-packet/open",
+        body = OpenRedPacketBody().let {
+            it.apiKey = ClientCaches.apiKey
+            it.oId = oId
+            it.gesture = gesture
+            it
+        }
+    )
 
 }

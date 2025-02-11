@@ -3,7 +3,6 @@ chat-room:
   queues:
     - type: ONCE
       messages:
-        - "![img](https://file.fishpi.cn/2025/02/01BE679FB0D1E665049A18B7BE7E5B5B-9bdc3c13.gif)<br />美好的一天从小B宅子开始"
         - 凌 去探索
         - 小冰 去打劫
         - 鸽 行行好吧
@@ -19,6 +18,11 @@ chat-room:
         - 鸽 勇士题
         - 凌 等级
         - 凌 报时
+        - 羡慕了
+        - 好好好
+        - 凌 背包
+        - 不愧是你
+        - "![图片表情](https://file.fishpi.cn/2024/11/4bb9cdb4fb6084426463733173f6bdd7-6b43ef10.gif)"
     - type: WEEK
       condition: 4
       messages:
