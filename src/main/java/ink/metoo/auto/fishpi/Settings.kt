@@ -76,13 +76,14 @@ object Settings {
             var queues: List<MessageQueue> = emptyList()
 
             enum class MessageType {
-                ONCE,
+                START_ONCE,
+                DAY_ONCE,
                 WEEK,
                 REPEAT,
             }
 
             class MessageQueue {
-                var type: MessageType = MessageType.ONCE
+                var type: MessageType = MessageType.DAY_ONCE
                 var condition: String? = null
                 var messages: List<String> = emptyList()
             }
