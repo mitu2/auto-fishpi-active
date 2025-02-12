@@ -17,8 +17,8 @@ fun main() {
         Log.info("检测到是jar环境启动请按照下面步骤填写")
         val console = System.console()
         Settings.fishpiClient.username = console.readLine("请输入鱼排账号: ")
-        Settings.fishpiClient.password = console.readPassword("请输入鱼排密码: ").toString()
-        Settings.fishpiClient.mfaCode = console.readPassword("请输入鱼排二级认证(没有回车): ").toString()
+        Settings.fishpiClient.password = console.readLine("请输入鱼排密码(如之前登陆过可回车跳过): ")
+        Settings.fishpiClient.mfaCode = console.readLine("请输入鱼排二级认证(没有回车): ")
     }
     LivenessTask.run()
     ChatRoomTask.run()
