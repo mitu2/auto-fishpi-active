@@ -8,10 +8,12 @@ import ink.metoo.auto.fishpi.call.ChatRoomCall
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import java.util.*
 
 class ChatRoomWebSocketListener : WebSocketListener() {
 
     private val gson = Gson()
+    private val random = Random()
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         val message = gson.fromJson(text, JsonObject::class.java)
@@ -41,20 +43,24 @@ class ChatRoomWebSocketListener : WebSocketListener() {
             "random", "average" -> {
                 val result = ChatRoomCall.openRedPacket(message.oId!!)
                 val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
+                val userName = result.info?.userName
                 if (me != null) {
-                    Log.info("成功领取了${result.info?.userName}的红包, 拿到了${me.userMoney}")
+                    Log.info("成功领取了${userName}的红包, 拿到了${me.userMoney}")
+                    ChatRoomCall.sendMessage("蛇蛇老板${userName}的红包, 祝您活到${random.nextInt(80, 120) + (me.userMoney ?: 0)}岁!")
                 } else {
-                    Log.info("未领取到${result.info?.userName}的红包, 是在下手慢了")
+                    Log.info("未领取到${userName}的红包, 是在下手慢了")
                 }
             }
 
             "specify" -> {
                 try {
-                    val recivers = gson.toJson(redPacket.recivers, Array<String>::class.java)
+                    val recivers = gson.toJson(redPacket.recivers.replace("\\", ""), Array<String>::class.java)
                     if (recivers.contains(Settings.fishpiClient.username)) {
                         val result = ChatRoomCall.openRedPacket(message.oId!!)
+                        val userName = result.info?.userName
                         val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                         Log.info("成功领取了${result.info?.userName}的专属红包, 拿到了${me?.userMoney}")
+                        ChatRoomCall.sendMessage("蛇蛇老板${userName}专属的红包, 祝您活到${random.nextInt(80, 120) + (me?.userMoney ?: 0)}岁!")
                     }
                 } catch (e: Exception) {
                     Log.error(e.message, e)
