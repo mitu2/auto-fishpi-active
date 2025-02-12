@@ -56,7 +56,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
             "specify" -> {
                 try {
                     val reciversStr = redPacket.recivers
-                    val recivers = gson.toJson(
+                    val recivers = gson.fromJson(
                         reciversStr.substring(1, reciversStr.length - 1).replace("\\", ""),
                         Array<String>::class.java
                     )
