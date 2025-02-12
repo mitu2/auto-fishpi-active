@@ -1,26 +1,51 @@
 package ink.metoo.auto.fishpi
 
 import com.google.gson.Gson
-import okhttp3.Call
+import ink.metoo.auto.fishpi.call.BaseResult
+import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import kotlin.reflect.KClass
 
 
 object Requests {
 
-
     private val gson = Gson()
+
+    private val okhttpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val request = chain.request()
+                val response = chain.proceed(request)
+                if (request.url.toString().startsWith(Settings.fishpiClient.baseUrl)) {
+                    response.body?.let {
+                        try {
+                            if (response.code == 401) {
+                                ClientCaches.refresh()
+                                return@let
+                            }
+                            val base = gson.fromJson(it.source().readUtf8LineStrict(), BaseResult::class.java)
+                            if (base.code == -1 && base.msg == "Invalid Api Key.") {
+                                ClientCaches.refresh()
+                                return@let
+                            }
+                        } catch (_: Exception) {
+
+                        }
+                    }
+                }
+                response
+            }
+            .build()
+    }
+
 
     private fun createRequest(block: Request.Builder.() -> Unit = {}): Call {
         val builder = Request.Builder()
             .header("User-Agent", Settings.fishpiClient.userAgent)
         builder.block()
-        return ClientCaches.okhttpClient.newCall(builder.build())
+        return okhttpClient.newCall(builder.build())
     }
 
     fun watchWebSocket(url: String, listener: WebSocketListener): WebSocket {
@@ -28,7 +53,7 @@ object Requests {
             .header("User-Agent", Settings.fishpiClient.userAgent)
             .url(url)
             .build()
-        return ClientCaches.okhttpClient.newWebSocket(request, listener)
+        return okhttpClient.newWebSocket(request, listener)
     }
 
     fun <T : Any> sendJsonRequest(

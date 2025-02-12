@@ -7,10 +7,9 @@ import ink.metoo.auto.fishpi.call.ChatRoomCall
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class AutoSendMessageTask : Runnable {
+object AutoSendMessageTask : Runnable {
 
     private val timer = Timer()
-    private val random = Random()
 
     object Task : TimerTask() {
 
@@ -18,6 +17,10 @@ class AutoSendMessageTask : Runnable {
         private val messageQueue = Settings.autoTask.autoSendMessage.queues.sortedBy { it.type.ordinal }
 
         override fun run() {
+            // 如果已经水满，或者活跃度未获得前，则不发送消息
+            if (ClientCaches.liveness < 0.0 || ClientCaches.liveness >= 100.0) {
+                return
+            }
             messageQueue.forEach {
                 when (it.type) {
                     Settings.AutoTask.AutoSendMessage.MessageType.DAY_ONCE -> {

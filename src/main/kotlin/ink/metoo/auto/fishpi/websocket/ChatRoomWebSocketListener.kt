@@ -57,7 +57,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                 try {
                     val reciversStr = redPacket.recivers
                     val recivers = gson.fromJson(
-                        reciversStr.substring(1, reciversStr.length - 1).replace("\\", ""),
+                        reciversStr.replace("\\", ""),
                         Array<String>::class.java
                     )
                     if (recivers.contains(Settings.fishpiClient.username)) {

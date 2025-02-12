@@ -10,12 +10,14 @@ object UserCall {
 
     private data class GetKeyBody (val nameOrEmail: String, val userPassword: String, val mfaCode: String? = null)
 
-    class GetKeyResult : BaseResult() {
+    class GetKeyResult : AbstractBaseResult() {
         @SerializedName("Key")
         var key: String? = null
     }
 
     fun getKey() = Requests.sendJsonRequest<GetKeyResult>("/api/getKey", GetKeyBody(Settings.fishpiClient.username, DigestUtils.md5Hex(Settings.fishpiClient.password), Settings.fishpiClient.mfaCode))
+
+    fun getUser() = Requests.sendGetRequest<BaseResult>("/api/user", arrayOf("apiKey" to ClientCaches.apiKey))
 
     class LivenessResult {
         var liveness: Double? = null

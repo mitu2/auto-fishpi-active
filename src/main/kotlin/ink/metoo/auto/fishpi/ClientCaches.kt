@@ -3,7 +3,7 @@ package ink.metoo.auto.fishpi
 import com.google.gson.Gson
 import ink.metoo.auto.fishpi.call.ChatRoomCall
 import ink.metoo.auto.fishpi.call.UserCall
-import okhttp3.OkHttpClient
+import ink.metoo.auto.fishpi.task.ChatRoomTask
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.io.path.Path
@@ -15,11 +15,6 @@ object ClientCaches {
     private var cache = ClientCache(workDir)
 
     var liveness: Double = -1.0
-
-    val okhttpClient: OkHttpClient by lazy {
-        OkHttpClient.Builder()
-            .build()
-    }
 
     val apiKey: String
         get() = cache.apiKey
@@ -58,18 +53,21 @@ object ClientCaches {
     }
 
     fun refresh() {
-        val dir = Path("${workDir}/cache").toFile()
+        val dir = Path("${workDir}/cache/${Settings.fishpiClient.username}.key").toFile()
         if (dir.exists()) {
-            dir.deleteRecursively()
+            dir.delete()
         }
         cache = ClientCache(workDir)
+        liveness = -1.0
+        Log.info("refresh apiKey")
+        ChatRoomTask.refresh()
     }
 
 }
 
 class ClientCache(workDir: String) {
 
-    private val keyFile = Path("${workDir}/cache/${Settings.fishpiClient.username}").toFile()
+    private val keyFile = Path("${workDir}/cache/${Settings.fishpiClient.username}.key").toFile()
 
     val apiKey: String by lazy {
         Log.info("login user: ${Settings.setting.fishpiClient?.username}")
@@ -80,7 +78,7 @@ class ClientCache(workDir: String) {
         }
         keyFile.parentFile.mkdirs()
         UserCall.getKey().run {
-            val key = key ?: throw RuntimeException(msg?.let { "get key fail cause: $it" } ?: "get key fail")
+            val key = key ?: throw RuntimeException(msg?.let { "get api-key fail cause: $it" } ?: "get key fail")
             Log.info("request key {$key}")
             keyFile.writeText(key)
             Log.info("save cache key to $keyFile")

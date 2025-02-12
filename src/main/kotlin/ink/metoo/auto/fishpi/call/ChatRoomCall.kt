@@ -17,7 +17,7 @@ object ChatRoomCall {
         var weight: Int? = null
     }
 
-    class ChatRoomNodeResult : BaseResult() {
+    class ChatRoomNodeResult : AbstractBaseResult() {
         var data: String? = null
         var avaliable: Array<ChatRoomNode>? = null
         var apiKey: String? = null
@@ -33,7 +33,7 @@ object ChatRoomCall {
         listener = listener
     )
 
-    class SendMessageBody : BaseBody() {
+    class SendMessageBody : AbstractBaseBody() {
         var client: String? = null
         var content: Any? = null
     }
@@ -68,12 +68,12 @@ object ChatRoomCall {
         return sendMessage("[redpacket]${json}[/redpacket]")
     }
 
-    class OpenRedPacketBody : BaseBody() {
+    class OpenRedPacketBody : AbstractBaseBody() {
         var oId: String = ""
         var gesture: String? = null
     }
 
-    class OpenRedPacket : BaseResult() {
+    class OpenRedPacket : AbstractBaseResult() {
         class Info {
             var count: Int? = null
             var gesture: Int? = null
