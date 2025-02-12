@@ -41,9 +41,13 @@ object Settings {
     val chatRoom: ChatRoom
         get() = setting.chatRoom!!
 
+    val autoTask: AutoTask
+        get() = setting.autoTask!!
+
     class Setting {
         var fishpiClient: Client? = null
         var chatRoom: ChatRoom? = null
+        var autoTask: AutoTask? = null
     }
 
     class Client {
@@ -56,20 +60,36 @@ object Settings {
 
     class ChatRoom {
         var clientId: String = ""
-        var queues: List<MessageQueue> = emptyList()
+        var watchRedPacket: Boolean = true
+    }
 
-        enum class MessageType {
-            ONCE,
-            WEEK,
-            REPEAT,
+    class AutoTask {
+
+        class YesterdayLivenessReward {
+            var enable: Boolean = true
         }
 
-        class MessageQueue {
-            var type: MessageType = MessageType.ONCE
-            var condition: String? = null
-            var messages: List<String> = emptyList()
+        var yesterdayLivenessReward: YesterdayLivenessReward = YesterdayLivenessReward()
 
+        class AutoSendMessage {
+            var enable: Boolean = true
+            var queues: List<MessageQueue> = emptyList()
+
+            enum class MessageType {
+                ONCE,
+                WEEK,
+                REPEAT,
+            }
+
+            class MessageQueue {
+                var type: MessageType = MessageType.ONCE
+                var condition: String? = null
+                var messages: List<String> = emptyList()
+            }
         }
+
+        var autoSendMessage: AutoSendMessage = AutoSendMessage()
+
     }
 
 }

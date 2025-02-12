@@ -13,8 +13,14 @@ class LivenessTask : Runnable {
     override fun run() {
         timer.schedule(object : TimerTask() {
             override fun run() {
-                ClientCaches.liveness = UserCall.getLiveness() ?: -1.0
-                Log.debug("liveness ${ClientCaches.liveness}%")
+                try {
+                    ClientCaches.liveness = UserCall.getLiveness() ?: -1.0
+                    Log.debug("liveness ${ClientCaches.liveness}%")
+                } catch (e: Exception) {
+                    Log.debug("liveness ${ClientCaches.liveness}%")
+                    Log.error("get liveness fail", e)
+                }
+
             }
         }, time, time)
     }

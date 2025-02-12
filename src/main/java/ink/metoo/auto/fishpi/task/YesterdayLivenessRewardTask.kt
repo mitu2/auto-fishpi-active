@@ -5,11 +5,11 @@ import ink.metoo.auto.fishpi.call.UserCall
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class EverydayTask : Runnable {
+class YesterdayLivenessRewardTask : Runnable {
 
     private val timer = Timer()
 
-    private fun doYesterdayLivenessReward() {
+    override fun run() {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 val yesterdayLivenessReward = UserCall.yesterdayLivenessReward()
@@ -21,10 +21,5 @@ class EverydayTask : Runnable {
             }
         }, TimeUnit.SECONDS.toMillis(5L))
     }
-
-    override fun run() {
-        doYesterdayLivenessReward()
-    }
-
 
 }

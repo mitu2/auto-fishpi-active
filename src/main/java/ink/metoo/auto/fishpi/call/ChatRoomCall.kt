@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import ink.metoo.auto.fishpi.ClientCaches
 import ink.metoo.auto.fishpi.Requests
 import ink.metoo.auto.fishpi.Settings
+import ink.metoo.auto.fishpi.websocket.RedPacket
 import okhttp3.WebSocketListener
 
 object ChatRoomCall {
@@ -32,7 +33,7 @@ object ChatRoomCall {
         listener = listener
     )
 
-    class SendMessageBody: BaseBody() {
+    class SendMessageBody : BaseBody() {
         var client: String? = null
         var content: Any? = null
     }
@@ -72,7 +73,21 @@ object ChatRoomCall {
         var gesture: String? = null
     }
 
-    fun openRedPacket(oId: String, gesture: String? = null) = Requests.sendJsonRequest<JsonObject> (
+    class OpenRedPacket : BaseResult() {
+        class Info {
+            var count: Int? = null
+            var gesture: Int? = null
+            var got: String? = null
+            var msg: String? = null
+            var userName: String? = null
+            // ...
+        }
+        var info: Info? = null
+        var recivers: List<String> = emptyList()
+        var who: List<RedPacket.User> = emptyList()
+    }
+
+    fun openRedPacket(oId: String, gesture: String? = null) = Requests.sendJsonRequest<OpenRedPacket>(
         path = "/chat-room/red-packet/open",
         body = OpenRedPacketBody().let {
             it.apiKey = ClientCaches.apiKey

@@ -1,8 +1,11 @@
 package ink.metoo.auto.fishpi
 
+import com.google.gson.Gson
 import ink.metoo.auto.fishpi.call.ChatRoomCall
 import ink.metoo.auto.fishpi.call.UserCall
 import okhttp3.OkHttpClient
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.io.path.Path
 
 object ClientCaches {
@@ -24,6 +27,36 @@ object ClientCaches {
     val webSocketUrl: String
         get() = cache.webSocketUrl
 
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val gson = Gson()
+
+
+    fun getAlreadyMessage(): List<String> {
+        val file = Path("${workDir}/log/${Settings.fishpiClient.username}/${dateFormat.format(Date())}.json").toFile()
+        if (file.exists()) {
+            try {
+                return gson.fromJson(file.reader(), Array<String>::class.java).toList()
+            } catch (e: Exception) {
+                Log.error(e.message, e)
+                return emptyList()
+            }
+        } else {
+            file.parentFile.let {
+                it.exists() || it.mkdirs()
+            }
+            return emptyList()
+        }
+    }
+
+    fun setAlreadyMessage(arr: List<String>) {
+        val file = Path("${workDir}/log/${Settings.fishpiClient.username}/${dateFormat.format(Date())}.json").toFile()
+        file.parentFile.let {
+            it.exists() || it.mkdirs()
+        }
+        file.exists() || file.createNewFile()
+        file.writeText(gson.toJson(arr))
+    }
+
     fun refresh() {
         val dir = Path("${workDir}/cache").toFile()
         if (dir.exists()) {
@@ -36,7 +69,7 @@ object ClientCaches {
 
 class ClientCache(workDir: String) {
 
-    private val keyFile = Path("${workDir}/cache/key").toFile()
+    private val keyFile = Path("${workDir}/cache/${Settings.fishpiClient.username}").toFile()
 
     val apiKey: String by lazy {
         Log.info("login user: ${Settings.setting.fishpiClient?.username}")
