@@ -20,7 +20,7 @@ object LivenessTask : Runnable {
                 }
 
             }
-        }, TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(31))
+        }, TimeUnit.SECONDS.toMillis(15), TimeUnit.SECONDS.toMillis(31))
     }
 
 }

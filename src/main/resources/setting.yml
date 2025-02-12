@@ -74,7 +74,7 @@ auto-task:
         messages:
           - 周三了，这波怎么说
       - type: WEEK
-        # 星期几 填写4为星期4 7为星期日
+        # 星期几 （1...7 星期一到日）
         condition: 4
         messages:
           - 凌 V50

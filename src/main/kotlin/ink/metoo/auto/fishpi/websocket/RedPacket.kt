@@ -4,9 +4,9 @@ class RedPacket {
     var msg: String? = null
     var recivers: String = ""
     var msgType: String? = null
-    var count: Int? = null
+    var count: Int = 0
     var type: String? = null
-    var got: String? = null
+    var got: Int = 0
     var who: List<User> = emptyList()
 
     class User {

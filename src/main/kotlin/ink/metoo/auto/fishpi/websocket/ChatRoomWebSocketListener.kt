@@ -14,6 +14,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
 
     private val gson = Gson()
     private val random = Random()
+//    private val timer = Timer()
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         val message = gson.fromJson(text, JsonObject::class.java)
@@ -24,7 +25,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                     val contentJson = gson.fromJson(content, JsonObject::class.java)
                     Log.debug("websocket special message: $content")
                     when (contentJson.get("msgType").asString) {
-                        "redPacket" -> doRedPacket(
+                        "redPacket" -> if (Settings.chatRoom.watchRedPacket) doRedPacket(
                             gson.fromJson(message, Message::class.java),
                             gson.fromJson(contentJson, RedPacket::class.java)
                         )
@@ -39,8 +40,12 @@ class ChatRoomWebSocketListener : WebSocketListener() {
     }
 
     private fun doRedPacket(message: Message, redPacket: RedPacket) {
+        if (redPacket.count <= redPacket.got) {
+            // 红包已领完 就不凑热闹了
+            return
+        }
         when (redPacket.type) {
-            "random", "average" -> {
+            "heartbeat", "random", "average" -> {
                 val result = ChatRoomCall.openRedPacket(message.oId!!)
                 val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                 val userName = result.info?.userName
@@ -71,10 +76,6 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                 } catch (e: Exception) {
                     Log.error(e.message, e)
                 }
-
-            }
-
-            "heartbeat" -> {
 
             }
 
