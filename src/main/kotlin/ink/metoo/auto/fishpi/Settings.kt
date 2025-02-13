@@ -41,13 +41,21 @@ object Settings {
     val chatRoom: ChatRoom
         get() = setting.chatRoom!!
 
-    val autoTask: AutoTask
-        get() = setting.autoTask!!
+    val jobs: List<Job>
+        get() = setting.jobs!!
 
     class Setting {
         var fishpiClient: Client? = null
         var chatRoom: ChatRoom? = null
-        var autoTask: AutoTask? = null
+        var jobs: List<Job>? = null
+    }
+
+    class Job {
+        var name: String = ""
+        var target: String = ""
+        var enable: Boolean = true
+        var cron: String = ""
+        var startExecute = false
     }
 
     class Client {
@@ -61,36 +69,20 @@ object Settings {
     class ChatRoom {
         var clientId: String = ""
         var watchRedPacket: Boolean = true
-    }
+        var messageQueue: List<MessageQueue> = emptyList()
 
-    class AutoTask {
-
-        class YesterdayLivenessReward {
-            var enable: Boolean = true
+        enum class MessageType {
+            START_ONCE,
+            DAY_ONCE,
+            WEEK,
+            REPEAT,
         }
 
-        var yesterdayLivenessReward: YesterdayLivenessReward = YesterdayLivenessReward()
-
-        class AutoSendMessage {
-            var enable: Boolean = true
-            var queues: List<MessageQueue> = emptyList()
-
-            enum class MessageType {
-                START_ONCE,
-                DAY_ONCE,
-                WEEK,
-                REPEAT,
-            }
-
-            class MessageQueue {
-                var type: MessageType = MessageType.DAY_ONCE
-                var condition: String? = null
-                var messages: List<String> = emptyList()
-            }
+        class MessageQueue {
+            var type: MessageType = MessageType.DAY_ONCE
+            var condition: String? = null
+            var messages: List<String> = emptyList()
         }
-
-        var autoSendMessage: AutoSendMessage = AutoSendMessage()
-
     }
 
 }

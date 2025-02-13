@@ -3,7 +3,7 @@ package ink.metoo.auto.fishpi
 import com.google.gson.Gson
 import ink.metoo.auto.fishpi.call.ChatRoomCall
 import ink.metoo.auto.fishpi.call.UserCall
-import ink.metoo.auto.fishpi.task.ChatRoomTask
+import ink.metoo.auto.fishpi.websocket.ChatRooms
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.io.path.Path
@@ -60,7 +60,7 @@ object ClientCaches {
         cache = ClientCache(workDir)
         liveness = -1.0
         Log.info("refresh apiKey")
-        ChatRoomTask.refresh()
+        ChatRooms.refresh()
     }
 
 }

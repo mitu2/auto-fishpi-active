@@ -1,7 +1,9 @@
-package ink.metoo.auto.fishpi
+package ink.metoo.auto.fishpi.call
 
 import com.google.gson.Gson
-import ink.metoo.auto.fishpi.call.BaseResult
+import ink.metoo.auto.fishpi.ClientCaches
+import ink.metoo.auto.fishpi.Log
+import ink.metoo.auto.fishpi.Settings
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -45,7 +47,13 @@ object Requests {
         val builder = Request.Builder()
             .header("User-Agent", Settings.fishpiClient.userAgent)
         builder.block()
-        return okhttpClient.newCall(builder.build())
+        val request = builder.build()
+        try {
+            return okhttpClient.newCall(request)
+        } catch (e: Throwable) {
+            Log.error("send request ${request.url} fail")
+            throw e
+        }
     }
 
     fun watchWebSocket(url: String, listener: WebSocketListener): WebSocket {

@@ -7,86 +7,108 @@ fishpi-client:
   password: You password
   # 二次认证 如有在填写
   # mfaCode: You mfaCode
+jobs:
+  # 领取昨日活跃任务
+  - name: receive-rewards-daily-job
+    target: ink.metoo.auto.fishpi.job.ReceiveRewardsDailyJob
+    # 是否启动 true 启动 false 关闭
+    enable: true
+    # 每日上午9点领取
+    cron: 0 0 9 * * ?
+    # 启动是否立即执行
+    start-execute: true
+  # 监听活跃度
+  - name: watch-liveness-job
+    target: ink.metoo.auto.fishpi.job.WatchLivenessJob
+    # 是否启动 true 启动 false 关闭
+    enable: true
+    # 每30秒监听一次
+    cron: 0/30 * * * * ?
+    # 启动是否立即执行
+    start-execute: false
+  # 自动发送消息
+  - name: auto-send-message-job
+    target: ink.metoo.auto.fishpi.job.AutoSendMessageJob
+    # 是否启动 true 启动 false 关闭
+    enable: true
+    # 9点到18点每分钟执行一次
+    cron: 0 0-59 9-18 * * ?
+    # 启动是否立即执行
+    start-execute: false
 chat-room:
   # 客户端ID
   client-id: Other/<Mitu2 Technology>
   # 是否自动抢红包
   watch-red-packet: true
-auto-task:
-  # 自动领取昨日活跃
-  yesterday-liveness-reward:
-    enable: true
-  # 自动发送消息
-  auto-send-message:
-    enable: true
-    queues:
-      # 每日只发送一次条件
-      - type: DAY_ONCE
-        messages:
-          - 凌 去探索
-          - 小冰 去打劫
-          - 鸽 行行好吧
-      # 每次启动发送一次
-      - type: START_ONCE
-        messages: []
-      # 重复发送
-      - type: REPEAT
-        messages:
-          - 凌 活跃
-          - 凌 今日运势
-          - 凌 今日水分
-          - 凌 信息
-          - 凌 笑话
-          - 凌 看看金价
-          - 乌拉
-          - 鸽 勇士题
-          - 凌 等级
-          - 凌 报时
-          - 羡慕了
-          - 好好好
-          - 凌 背包
-          - 不愧是你
-          - "![图片表情](https://file.fishpi.cn/2024/11/4bb9cdb4fb6084426463733173f6bdd7-6b43ef10.gif)"
-          - 小冰 亲密度
-          - 小冰 活跃
-          - 小冰 背包
-          - 小冰 盲盒统计
-          - 小冰 查询保底
-          - 鸽 排行榜
-          - 鸽 问题库状态
-          - 鸽 乞讨概率
-          - 鸽 乞讨记录
-          - 鸽 坚持不懈
-          - 鸽 谁最非
-          - 鸽 谁最欧
-          - "![图片表情](https://file.fishpi.cn/2024/07/QQ%E5%9B%BE%E7%89%8720240715130128-58120d55.gif)"
-      # 按照星期几发送
-      - type: WEEK
-        condition: 1
-        messages:
-          - 周一了，这波怎么说
-      - type: WEEK
-        condition: 2
-        messages:
-          - 周二了，这波怎么说
-      - type: WEEK
-        condition: 3
-        messages:
-          - 周三了，这波怎么说
-      - type: WEEK
-        # 星期几 （1...7 星期一到日）
-        condition: 4
-        messages:
-          - 凌 V50
-          - 周四了，这波怎么说, 来发送 (凌 V50)
-      - type: WEEK
-        condition: 5
-        messages:
-          - 凌 TGIF
-          - 周五了，这波怎么说, 来发送 (凌 TGIF)
-      - type: WEEK
-        condition: 6
-        messages:
-          - 凌 窝囊费
-          - 周六了，牛马们来发送 (凌 窝囊费)
+  # 消息队列
+  message-queue:
+    # 每日只发送一次条件
+    - type: DAY_ONCE
+      messages:
+        - 凌 去探索
+        - 小冰 去打劫
+        - 鸽 行行好吧
+    # 每次启动发送一次
+    - type: START_ONCE
+      messages: []
+    # 重复发送
+    - type: REPEAT
+      messages:
+        - 凌 活跃
+        - 凌 今日运势
+        - 凌 今日水分
+        - 凌 信息
+        - 凌 笑话
+        - 凌 看看金价
+        - 乌拉
+        - 鸽 勇士题
+        - 凌 等级
+        - 凌 报时
+        - 羡慕了
+        - 好好好
+        - 凌 背包
+        - 不愧是你
+        - "![图片表情](https://file.fishpi.cn/2024/11/4bb9cdb4fb6084426463733173f6bdd7-6b43ef10.gif)"
+        - 小冰 亲密度
+        - 小冰 活跃
+        - 小冰 背包
+        - 小冰 盲盒统计
+        - 小冰 查询保底
+        - 鸽 排行榜
+        - 鸽 问题库状态
+        - 鸽 乞讨概率
+        - 鸽 乞讨记录
+        - 鸽 坚持不懈
+        - 鸽 谁最非
+        - 鸽 谁最欧
+        - "![图片表情](https://file.fishpi.cn/2024/07/QQ%E5%9B%BE%E7%89%8720240715130128-58120d55.gif)"
+    # 按照星期几发送
+    - type: WEEK
+      condition: 1
+      messages:
+        - 周一了，这波怎么说
+    - type: WEEK
+      condition: 2
+      messages:
+        - 周二了，这波怎么说
+    - type: WEEK
+      condition: 3
+      messages:
+        - 周三了，这波怎么说
+    - type: WEEK
+      # 星期几 （1...7 星期一到日）
+      condition: 4
+      messages:
+        - 凌 V50
+        - 周四了，这波怎么说, 来发送 (凌 V50)
+    - type: WEEK
+      condition: 5
+      messages:
+        - 凌 TGIF
+        - 周五了，这波怎么说, 来发送 (凌 TGIF)
+    - type: WEEK
+      condition: 6
+      messages:
+        - 凌 窝囊费
+        - 周六了，牛马们来发送 (凌 窝囊费)
 

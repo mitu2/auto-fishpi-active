@@ -2,7 +2,6 @@ package ink.metoo.auto.fishpi.call
 
 import com.google.gson.annotations.SerializedName
 import ink.metoo.auto.fishpi.ClientCaches
-import ink.metoo.auto.fishpi.Requests
 import ink.metoo.auto.fishpi.Settings
 import org.apache.commons.codec.digest.DigestUtils
 

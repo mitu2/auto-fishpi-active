@@ -1,13 +1,12 @@
-package ink.metoo.auto.fishpi.task
+package ink.metoo.auto.fishpi.websocket
 
 import ink.metoo.auto.fishpi.Log
 import ink.metoo.auto.fishpi.call.ChatRoomCall
-import ink.metoo.auto.fishpi.websocket.ChatRoomWebSocketListener
 import okhttp3.WebSocket
 
-object ChatRoomTask : Runnable {
+object ChatRooms : Runnable {
 
-    private var ws: WebSocket? = null
+    var ws: WebSocket? = null
 
     override fun run() {
         try {

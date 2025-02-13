@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import org.junit.Test
 
 class JsonTest {
+
     @Test
     fun testCase() {
         val json = "\"[\\\"sevenSummer\\\"]\""
@@ -12,4 +13,5 @@ class JsonTest {
         println(substring)
         println(gson.fromJson(substring, Array<String>::class.java))
     }
+
 }

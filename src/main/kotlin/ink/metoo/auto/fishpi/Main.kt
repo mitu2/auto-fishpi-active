@@ -1,9 +1,7 @@
 package ink.metoo.auto.fishpi
 
-import ink.metoo.auto.fishpi.task.AutoSendMessageTask
-import ink.metoo.auto.fishpi.task.ChatRoomTask
-import ink.metoo.auto.fishpi.task.LivenessTask
-import ink.metoo.auto.fishpi.task.YesterdayLivenessRewardTask
+import ink.metoo.auto.fishpi.job.AutoJobs
+import ink.metoo.auto.fishpi.websocket.ChatRooms
 
 object Main {
     fun isJar(): Boolean {
@@ -20,14 +18,8 @@ fun main() {
         Settings.fishpiClient.password = console.readLine("请输入鱼排密码(如之前登陆过可回车跳过): ")
         Settings.fishpiClient.mfaCode = console.readLine("请输入鱼排二级认证(没有回车): ")
     }
-    LivenessTask.run()
-    ChatRoomTask.run()
-    if (Settings.autoTask.autoSendMessage.enable) {
-        AutoSendMessageTask.run()
-    }
-    if (Settings.autoTask.yesterdayLivenessReward.enable) {
-        YesterdayLivenessRewardTask.run()
-    }
+    AutoJobs.init()
+    ChatRooms.run()
 }
 
 
