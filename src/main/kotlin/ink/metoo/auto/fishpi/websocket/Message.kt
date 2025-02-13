@@ -26,4 +26,14 @@ class Message {
      * 消息内容
      */
     var content: String? = null
+
+    /**
+     * 用户名
+     */
+    var userName: String? = null
+
+    /**
+     * 用户昵称
+     */
+    var userNickname: String? = null
 }

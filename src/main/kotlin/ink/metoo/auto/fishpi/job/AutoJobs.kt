@@ -18,14 +18,22 @@ object AutoJobs {
             }
             val targetClass = Class.forName(it.target)
             if (Job::class.java.isAssignableFrom(targetClass)) {
+                if (it.startExecute) {
+                    val jobDetail = JobBuilder
+                        .newJob(targetClass as Class<out Job>)
+                        .withIdentity(it.name + "_now")
+                        .build()
+                    val startNowTrigger = TriggerBuilder.newTrigger()
+                        .forJob(jobDetail)
+                        .startNow()
+                        .build()
+                    scheduler.scheduleJob(jobDetail, startNowTrigger)
+                }
                 val jobDetail = JobBuilder
                     .newJob(targetClass as Class<out Job>)
                     .withIdentity(it.name)
                     .build()
                 val triggerBuilder = TriggerBuilder.newTrigger()
-                if (it.startExecute) {
-                    triggerBuilder.startNow()
-                }
                 val trigger = triggerBuilder.forJob(jobDetail)
                     .withSchedule(CronScheduleBuilder.cronSchedule(it.cron))
                     .build()
