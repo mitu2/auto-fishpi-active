@@ -9,12 +9,13 @@ import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ChatRoomWebSocketListener : WebSocketListener() {
 
     private val gson = Gson()
     private val random = Random()
-//    private val timer = Timer()
+    private val timer = Timer()
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         val message = gson.fromJson(text, JsonObject::class.java)
@@ -45,18 +46,20 @@ class ChatRoomWebSocketListener : WebSocketListener() {
             return
         }
         when (redPacket.type) {
-            "heartbeat", "random", "average" -> {
-                val result = ChatRoomCall.openRedPacket(message.oId!!)
-                val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
-                val userName = result.info?.userName
-                if (me != null) {
-                    Log.info("成功领取了${userName}的红包, 拿到了${me.userMoney}")
-                    // val year = random.nextInt(80, 120) + (me.userMoney ?: 0)
-                    // ChatRoomCall.sendMessage("蛇蛇老板${userName}的红包, 祝您活到${year}岁!")
-                } else {
-                    Log.info("未领取到${userName}的红包, 是在下手慢了")
+            "heartbeat", "random", "average" -> timer.schedule(object : TimerTask() {
+                override fun run() {
+                    val result = ChatRoomCall.openRedPacket(message.oId!!)
+                    val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
+                    val userName = result.info?.userName
+                    if (me != null) {
+                        Log.info("成功领取了${userName}的红包, 拿到了${me.userMoney}")
+                        // val year = random.nextInt(80, 120) + (me.userMoney ?: 0)
+                        // ChatRoomCall.sendMessage("蛇蛇老板${userName}的红包, 祝您活到${year}岁!")
+                    } else {
+                        Log.info("未领取到${userName}的红包, 是在下手慢了")
+                    }
                 }
-            }
+            }, random.nextLong(0, TimeUnit.SECONDS.toMillis(3)))
 
             "specify" -> {
                 try {
@@ -69,9 +72,9 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                         val result = ChatRoomCall.openRedPacket(message.oId!!)
                         val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                         Log.info("成功领取了${result.info?.userName}的专属红包, 拿到了${me?.userMoney}")
-                        // val userName = result.info?.userName
-                        // val year = random.nextInt(80, 120) + (me?.userMoney ?: 0)
-                        // ChatRoomCall.sendMessage("蛇蛇老板${userName}专属的红包, 祝您活到${year}岁!")
+                         val userName = result.info?.userName
+                         val year = random.nextInt(80, 120) + (me?.userMoney ?: 0)
+                         ChatRoomCall.sendMessage("蛇蛇老板${userName}专属的红包, 祝您活到${year}岁!")
                     }
                 } catch (e: Exception) {
                     Log.error(e.message, e)
