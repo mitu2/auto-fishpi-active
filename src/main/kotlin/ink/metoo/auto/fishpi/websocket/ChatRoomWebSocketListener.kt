@@ -59,7 +59,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                         Log.info("未领取到${userName}的红包, 是在下手慢了")
                     }
                 }
-            }, random.nextLong(0, TimeUnit.SECONDS.toMillis(3)))
+            }, random.nextLong(0L, TimeUnit.SECONDS.toMillis(3L)))
 
             "specify" -> {
                 try {
