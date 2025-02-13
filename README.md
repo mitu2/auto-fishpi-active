@@ -5,9 +5,20 @@
 ## 使用方法
 
 1. clone当前项目(`git clone` this repo)
-2. 去`src/main/resources/setting.yml`看注释配置信息
-3. 运行`src/main/Main.kt`（该环境需要有JDK）
+2. git pull 更新
+3. 自定义`src/main/resources/setting.yml`(里面有详细注释, 又可以不修改)
 
+### 直接运行法
+
+打开idea或者其他ide工具
+
+### 服务器部署法 (Linux)
+
+1. 打包 `mvn clean package`
+2. 进入打包目录 `cd target`
+3. 开一个后台`screen -R auto-fishpi-active`
+4. 运行`java -jar auto-fishpi-active-1.0-jar-with-dependencies.jar`
+5. 输入正确账号密码后即可 `ctrl A + D` 切回
 
 ## 它能帮你干什么
 
