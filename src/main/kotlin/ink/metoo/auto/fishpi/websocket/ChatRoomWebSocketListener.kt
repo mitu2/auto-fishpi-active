@@ -8,6 +8,7 @@ import ink.metoo.auto.fishpi.call.ChatRoomCall
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import org.apache.commons.lang3.math.NumberUtils
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timerTask
@@ -33,9 +34,9 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                 } else {
                     val md = message.md ?: return
                     if (md.startsWith("发红包") && message.userName == Settings.fishpiClient.username) {
-                        val params = md.split(" ")
+                        val params = md.split(regex = "[ \n]".toPattern())
                         val name = params.getOrNull(1) ?: return
-                        val money = params.getOrNull(2)?.toInt() ?: 32
+                        val money = NumberUtils.toInt(params.getOrNull(2), 32).coerceAtLeast(32)
                         val result = ChatRoomCall.sendRedPacket(
                             ChatRoomCall.RedPacketBody(
                                 msg = params.getOrNull(3) ?: "给${name}的专属红包",
