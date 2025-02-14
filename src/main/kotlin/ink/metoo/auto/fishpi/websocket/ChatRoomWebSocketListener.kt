@@ -30,6 +30,23 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                             doRedPacket(message, gson.fromJson(contentJson, RedPacket::class.java))
                         }
                     }
+                } else {
+                    val md = message.md ?: return
+                    if (md.startsWith("发红包") && message.userName == Settings.fishpiClient.username) {
+                        val params = md.split(" ")
+                        val name = params.getOrNull(1) ?: return
+                        val money = params.getOrNull(2)?.toInt() ?: 32
+                        val result = ChatRoomCall.sendRedPacket(
+                            ChatRoomCall.RedPacketBody(
+                                msg = params.getOrNull(3) ?: "给${name}的专属红包",
+                                money = money,
+                                count = 1,
+                                recivers = arrayListOf(name),
+                                type = "specify"
+                            )
+                        )
+                        Log.info("向${name}发送了${money}积分红包, 发送结果: ${result.code}")
+                    }
                 }
             }
         }

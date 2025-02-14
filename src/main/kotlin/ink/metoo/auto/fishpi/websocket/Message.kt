@@ -36,4 +36,9 @@ class Message {
      * 用户昵称
      */
     var userNickname: String? = null
+
+    /**
+     * 消息内容Markdown
+     */
+    var md: String? = null
 }

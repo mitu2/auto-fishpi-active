@@ -7,14 +7,21 @@ import org.apache.commons.codec.digest.DigestUtils
 
 object UserCall {
 
-    private data class GetKeyBody (val nameOrEmail: String, val userPassword: String, val mfaCode: String? = null)
+    private data class GetKeyBody(val nameOrEmail: String, val userPassword: String, val mfaCode: String? = null)
 
     class GetKeyResult : AbstractBaseResult() {
         @SerializedName("Key")
         var key: String? = null
     }
 
-    fun getKey() = Requests.sendJsonRequest<GetKeyResult>("/api/getKey", GetKeyBody(Settings.fishpiClient.username, DigestUtils.md5Hex(Settings.fishpiClient.password), Settings.fishpiClient.mfaCode))
+    fun getKey() = Requests.sendJsonRequest<GetKeyResult>(
+        "/api/getKey",
+        GetKeyBody(
+            Settings.fishpiClient.username,
+            DigestUtils.md5Hex(Settings.fishpiClient.password),
+            Settings.fishpiClient.mfaCode
+        )
+    )
 
     fun getUser() = Requests.sendGetRequest<BaseResult>("/api/user", arrayOf("apiKey" to ClientCaches.apiKey))
 
@@ -22,15 +29,20 @@ object UserCall {
         var liveness: Double? = null
     }
 
-    fun getLiveness() = Requests.sendGetRequest<LivenessResult>("/user/liveness", arrayOf("apiKey" to ClientCaches.apiKey)).liveness
+    fun getLiveness() =
+        Requests.sendGetRequest<LivenessResult>("/user/liveness", arrayOf("apiKey" to ClientCaches.apiKey)).liveness
 
     class YesterdayLivenessReward {
         var sum: Int? = null
     }
+
     /**
      * 领取昨日活跃奖励
      */
-    fun yesterdayLivenessReward() = Requests.sendGetRequest<YesterdayLivenessReward>("/activity/yesterday-liveness-reward-api", arrayOf("apiKey" to ClientCaches.apiKey)).sum
+    fun yesterdayLivenessReward() = Requests.sendGetRequest<YesterdayLivenessReward>(
+        "/activity/yesterday-liveness-reward-api",
+        arrayOf("apiKey" to ClientCaches.apiKey)
+    ).sum
 
 }
 
