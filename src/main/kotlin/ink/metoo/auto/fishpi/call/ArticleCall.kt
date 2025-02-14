@@ -5,6 +5,7 @@ import ink.metoo.auto.fishpi.ClientCaches
 
 object ArticleCall {
 
+    // AI generate
     class ArticlesResult : AbstractBaseResult() {
 
         var data: Data? = null
@@ -175,7 +176,5 @@ object ArticleCall {
     )
 
 }
-
-// ai 生成的类
 
 

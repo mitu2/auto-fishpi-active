@@ -12,8 +12,8 @@ object Main {
 fun main() {
     Log.info("Happy every day. mitu2. mitu2.")
     if (Main.isJar()) {
-        Log.info("检测到是jar环境启动请按照下面步骤填写")
         val console = System.console()
+        Log.info("检测到是Jar环境启动请按照下面步骤填写")
         Settings.fishpiClient.username = console.readLine("请输入鱼排账号: ")
         Settings.fishpiClient.password = console.readLine("请输入鱼排密码(如之前登陆过可回车跳过): ")
         Settings.fishpiClient.mfaCode = console.readLine("请输入鱼排二级认证(没有回车): ")

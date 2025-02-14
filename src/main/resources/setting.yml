@@ -20,7 +20,7 @@ jobs:
   # 监听活跃度
   - name: watch-liveness-job
     target: ink.metoo.auto.fishpi.job.WatchLivenessJob
-    # 是否启动 true 启动 false 关闭
+    # 是否启动 true 启动 false 关闭 (如关闭这个会可能导致其他Job失效)
     enable: true
     # 每30秒监听一次
     cron: 0/30 * * * * ?
@@ -31,10 +31,11 @@ jobs:
     target: ink.metoo.auto.fishpi.job.AutoSendMessageJob
     # 是否启动 true 启动 false 关闭
     enable: true
-    # 9点到18点每分钟执行一次
-    cron: 0 0/10 9-18 * * ?
+    # 9点到18点每5分钟执行一次
+    cron: 0 0/5 9-18 * * ?
     # 启动是否立即执行
     start-execute: false
+  # 自动阅读文章
   - name: auto-read-article-job
     target: ink.metoo.auto.fishpi.job.AutoReadArticleJob
     enable: true
@@ -52,7 +53,6 @@ chat-room:
     # 每日只发送一次条件
     - type: DAY_ONCE
       messages:
-        - 凌 去探索
         - 小冰 去打劫
         - 鸽 行行好吧
     # 每次启动发送一次
@@ -61,26 +61,16 @@ chat-room:
     # 重复发送
     - type: REPEAT
       messages:
-        - 凌 活跃
-        - 凌 今日运势
-        - 凌 今日水分
-        - 凌 信息
-        - 凌 笑话
-        - 凌 看看金价
         - 乌拉
-        - 鸽 勇士题
-        - 凌 等级
-        - 凌 报时
         - 羡慕了
         - 好好好
-        - 凌 背包
         - 不愧是你
-        - "![图片表情](https://file.fishpi.cn/2024/11/4bb9cdb4fb6084426463733173f6bdd7-6b43ef10.gif)"
         - 小冰 亲密度
         - 小冰 活跃
         - 小冰 背包
         - 小冰 盲盒统计
         - 小冰 查询保底
+        - 鸽 勇士题
         - 鸽 排行榜
         - 鸽 问题库状态
         - 鸽 乞讨概率
@@ -88,6 +78,11 @@ chat-room:
         - 鸽 坚持不懈
         - 鸽 谁最非
         - 鸽 谁最欧
+        - "![图片表情](https://file.fishpi.cn/2025/01/7CB49DE24B64A960D36CA2B248BDAA22-5da22391.gif)"
+        - "![图片表情](https://file.fishpi.cn/2025/01/b7f563eb1aeb32449e2632112cba77b3-bb3643ee.gif)"
+        - "![图片表情](https://file.fishpi.cn/2025/01/5f7eea3f2eb98c687c27b75fb81c03a9-84513ba7.jpg)"
+        - "![图片表情](https://file.fishpi.cn/2025/01/872F9BC1C7DE37F2DFCAEC5F82B1E908-dc98c35e.gif)"
+        - "![图片表情](https://file.fishpi.cn/2024/11/4bb9cdb4fb6084426463733173f6bdd7-6b43ef10.gif)"
         - "![图片表情](https://file.fishpi.cn/2024/07/QQ%E5%9B%BE%E7%89%8720240715130128-58120d55.gif)"
     # 按照星期几发送
     - type: WEEK
@@ -106,16 +101,16 @@ chat-room:
       # 星期几 （1...7 星期一到日）
       condition: 4
       messages:
-        - 凌 V50
-        - 周四了，这波怎么说, 来发送 (凌 V50)
+#        - 凌 V50
+        - 周四了，我是秦始皇，V我50我去召唤兵马俑
     - type: WEEK
       condition: 5
       messages:
-        - 凌 TGIF
-        - 周五了，这波怎么说, 来发送 (凌 TGIF)
+#        - 凌 TGIF
+        - 熬过周五就周六辣
     - type: WEEK
       condition: 6
       messages:
-        - 凌 窝囊费
-        - 周六了，牛马们来发送 (凌 窝囊费)
+#        - 凌 窝囊费
+        - 周六了，牛马们
 

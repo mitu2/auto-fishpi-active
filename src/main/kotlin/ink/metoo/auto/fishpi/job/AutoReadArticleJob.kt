@@ -13,7 +13,9 @@ class AutoReadArticleJob : Job {
         val max = 20
         var read = 0
         var p = 1
-        while (max > read) {
+        // 重试次数 预防无限循环
+        var retryCount = 5
+        while (max > read && retryCount > 0) {
             try {
                 ArticleCall.getArticles(p = p, size = 5).data?.let { article ->
                     article.articles.forEach { at ->
@@ -28,7 +30,9 @@ class AutoReadArticleJob : Job {
                         }
                     }
                 }
+                retryCount = 5
             } catch (e: Exception) {
+                retryCount --
                 Log.error("阅读文章发生错误", e)
             }
             p ++
