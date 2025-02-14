@@ -42,7 +42,7 @@ jobs:
     # 每日10点
     cron: 0 0 10 * * ?
     # 启动是否立即执行
-    start-execute: false
+    start-execute: true
 chat-room:
   # 客户端ID
   client-id: Other/<Mitu2 Technology>
