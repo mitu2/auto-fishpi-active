@@ -7,6 +7,7 @@ import ink.metoo.auto.fishpi.websocket.ChatRooms
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.io.path.Path
+import kotlin.system.exitProcess
 
 object ClientCaches {
 
@@ -78,7 +79,12 @@ class ClientCache(workDir: String) {
         }
         keyFile.parentFile.mkdirs()
         UserCall.getKey().run {
-            val key = key ?: throw RuntimeException(msg?.let { "get api-key fail cause: $it" } ?: "get key fail")
+            val key = key ?: throw RuntimeException(msg?.let {
+                if (it == "密码错误" || it == "登录频率过快，请5分钟后重试。") {
+                    Log.error(Settings.fishpiClient.username + msg)
+                    exitProcess(0)
+                } else "get api-key fail cause: $it"
+            } ?: "get key fail")
             Log.info("request key {$key}")
             keyFile.writeText(key)
             Log.info("save cache key to $keyFile")

@@ -16,7 +16,7 @@ object UserCall {
 
     fun getKey() = Requests.sendJsonRequest<GetKeyResult>(
         "/api/getKey",
-        GetKeyBody(
+        body = GetKeyBody(
             Settings.fishpiClient.username,
             DigestUtils.md5Hex(Settings.fishpiClient.password),
             Settings.fishpiClient.mfaCode

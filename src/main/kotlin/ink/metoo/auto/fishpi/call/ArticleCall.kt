@@ -157,7 +157,7 @@ object ArticleCall {
         )
     )
 
-    class ArticleResult: AbstractBaseResult() {
+    class ArticleResult : AbstractBaseResult() {
 
         var data: Data? = null
 
@@ -172,6 +172,35 @@ object ArticleCall {
         "/api/article/${aid}",
         arrayOf(
             "apiKey" to ClientCaches.apiKey,
+        )
+    )
+
+    class LikeArticleBody : AbstractBaseBody() {
+        var dataId: String? = null
+    }
+
+    class LikeArticleResult {
+        var code : Int? = null
+        var type: Int? = null
+    }
+
+    /**
+     * 给文章点赞
+     */
+    fun likeArticle(aid: String) = Requests.sendJsonRequest<LikeArticleResult>(
+        path = "/vote/up/article",
+        body = LikeArticleBody().let {
+            it.dataId = aid
+            it.apiKey = ClientCaches.apiKey
+            it
+        }
+    )
+
+    fun thankArticle(aid: String) = Requests.sendJsonRequest<JsonObject>(
+        path = "/article/thank",
+        queryParams = arrayOf(
+            "articleId" to aid,
+            "apiKey" to ClientCaches.apiKey
         )
     )
 

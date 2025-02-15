@@ -9,7 +9,7 @@ object NotificationsCall {
         var commentIds: String = ""
     }
 
-    fun makeArticleRead(articleId: String, commentIds: String) = Requests.sendJsonRequest<BaseResult>("/notifications/make-read", MakeArticleReadBody().let {
+    fun makeArticleRead(articleId: String, commentIds: String) = Requests.sendJsonRequest<BaseResult>("/notifications/make-read", body = MakeArticleReadBody().let {
         it.articleId = articleId
         it.commentIds = commentIds
         it.apiKey = ClientCaches.apiKey

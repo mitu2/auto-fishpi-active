@@ -23,7 +23,7 @@ object ChatRoomCall {
 
     fun getChatRoomNode() = Requests.sendGetRequest<ChatRoomNodeResult>(
         path = "/chat-room/node/get",
-        queryParam = arrayOf(Pair("apiKey", ClientCaches.apiKey))
+        queryParams = arrayOf(Pair("apiKey", ClientCaches.apiKey))
     )
 
     fun watchChatRoom(listener: WebSocketListener) = Requests.watchWebSocket(

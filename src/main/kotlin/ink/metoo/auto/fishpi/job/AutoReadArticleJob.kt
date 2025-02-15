@@ -10,12 +10,12 @@ class AutoReadArticleJob : Job {
 
     override fun execute(context: JobExecutionContext) {
         // 查看文章	5 积分	每天20篇	0.75%
-        val max = 20
+        val maxRead = 20
         var read = 0
         var p = 1
         // 重试次数 预防无限循环
         var retryCount = 5
-        while (max > read && retryCount > 0) {
+        while (maxRead > read && retryCount > 0) {
             try {
                 ArticleCall.getArticles(p = p, size = 5).data?.let { article ->
                     article.articles.forEach { at ->

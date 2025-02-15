@@ -66,14 +66,24 @@ object Requests {
 
     fun <T : Any> sendJsonRequest(
         path: String,
+        queryParams: Array<Pair<String, String?>>? = null,
         body: Any? = null,
         clazz: KClass<T>,
         block: Request.Builder.() -> Unit = {}
     ): T {
+        val url = (Settings.fishpiClient.baseUrl + path).toHttpUrl().run {
+            val builder = newBuilder()
+            queryParams?.forEach {
+                builder.addQueryParameter(it.first, it.second)
+            }
+            builder.build()
+        }
         val call = createRequest {
+            url(url)
             if (body != null) {
-                url(Settings.fishpiClient.baseUrl + path)
                 post(gson.toJson(body).toRequestBody("application/json".toMediaTypeOrNull()))
+            } else {
+                post("{}".toRequestBody("application/json".toMediaTypeOrNull()))
             }
             block()
         }
@@ -84,22 +94,23 @@ object Requests {
 
     inline fun <reified T : Any> sendJsonRequest(
         path: String,
+        queryParams: Array<Pair<String, String?>>? = null,
         body: Any? = null,
         noinline block: Request.Builder.() -> Unit = {}
     ): T {
-        return sendJsonRequest(path, body, T::class, block)
+        return sendJsonRequest(path, queryParams, body, T::class, block)
     }
 
     fun <T : Any> sendGetRequest(
         path: String,
-        queryParam: Array<Pair<String, String?>>? = null,
+        queryParams: Array<Pair<String, String?>>? = null,
         clazz: KClass<T>,
 
         block: Request.Builder.() -> Unit = {}
     ): T {
         val url = (Settings.fishpiClient.baseUrl + path).toHttpUrl().run {
             val builder = newBuilder()
-            queryParam?.forEach {
+            queryParams?.forEach {
                 builder.addQueryParameter(it.first, it.second)
             }
             builder.build()
@@ -116,10 +127,10 @@ object Requests {
 
     inline fun <reified T : Any> sendGetRequest(
         path: String,
-        queryParam: Array<Pair<String, String?>>? = null,
+        queryParams: Array<Pair<String, String?>>? = null,
         noinline block: Request.Builder.() -> Unit = {}
     ): T {
-        return sendGetRequest(path, queryParam, T::class, block)
+        return sendGetRequest(path, queryParams, T::class, block)
     }
 
 }

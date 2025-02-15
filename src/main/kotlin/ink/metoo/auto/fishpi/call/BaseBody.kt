@@ -6,4 +6,4 @@ abstract class AbstractBaseBody {
 
 }
 
-class BaseBody: AbstractBaseBody()
+class BaseBody(apiKey: String) : AbstractBaseBody()
