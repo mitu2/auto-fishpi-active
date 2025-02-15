@@ -7,7 +7,7 @@ class ArticleCallTest {
 
     @Test
     fun testCase() {
-        println(ArticleCall.thankArticle("1739526653048"))
+//        println(ArticleCall.thankArticle("1739526653048"))
 //        val result = ArticleCall.getArticles()
 //        val oId = result.data?.articles?.get(0)?.oId
 //        ArticleCall.getArticle(oId!!).data?.article?.let { at ->
