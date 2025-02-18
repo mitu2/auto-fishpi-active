@@ -122,13 +122,13 @@ class ChatRoomWebSocketListener : WebSocketListener() {
 
             }
 
-            "rockPaperScissors" -> {
+            "rockPaperScissors" -> timer.schedule(timerTask {
                 if (!isMe && redPacket.money <= Settings.chatRoom.watchRockPaperScissorsMaxMoney) {
                     val result = ChatRoomCall.openRedPacket(message.oId!!, gesture = (0..1).random().toString())
                     val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                     if (me == null) {
                         Log.info("未领取到${message.userName}的猜拳红包, 是在下手慢了")
-                        return
+                        return@timerTask
                     }
                     val userMoney = me.userMoney ?: 0
                     if (userMoney < 0) {
@@ -139,7 +139,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                         Log.info("${message.userName}的猜拳红包, 是在下赢了${userMoney}")
                     }
                 }
-            }
+            }, (TimeUnit.SECONDS.toMillis(1L)..TimeUnit.SECONDS.toMillis(3L)).random())
         }
     }
 
