@@ -1,6 +1,7 @@
 package ink.metoo.auto.fishpi.call
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import ink.metoo.auto.fishpi.ClientCaches
 import ink.metoo.auto.fishpi.Settings
 import ink.metoo.auto.fishpi.websocket.RedPacket
@@ -99,6 +100,22 @@ object ChatRoomCall {
     fun getMessageRaw(oId: String) = Requests.sendGetRequest<String>(
         path = "/cr/raw/${oId}",
         queryParams = arrayOf(Pair("apiKey", ClientCaches.apiKey))
+    )
+
+
+    fun getContextMessage(
+        oId: String = "",
+        mode: Int = 0,
+        size: Int = 1,
+    ) = Requests.sendGetRequest<JsonObject>(
+        path = "/chat-room/getMessage",
+        queryParams = arrayOf(
+            "apiKey" to ClientCaches.apiKey,
+            "oId" to oId,
+            "mode" to mode.toString(),
+            "size" to size.toString()
+
+        )
     )
 
 }

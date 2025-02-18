@@ -30,3 +30,6 @@
 3. 聊天室发送消息 **此配置默认并未配置（谨慎配置）** 参考`setting.yml`中的`jobs[name='auto-send-message-job']` 配置项`
 4. 自动去阅读文章 参考`setting.yml`中的`jobs[name='auto-read-article-job']` 配置项
 5. 自动点赞文章 参考`setting.yml`中的`jobs[name='auto-like-article-job']` 配置项
+6. 聊天室指令
+   1. `发红包 用户ID [红包金额(可选)] [消息(可选)]`
+   2. `发猜拳 猜拳次数 [红包金额(可选)] [消息(可选)]`

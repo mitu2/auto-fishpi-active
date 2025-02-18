@@ -77,6 +77,7 @@ object Settings {
     class ChatRoom {
         var clientId: String = ""
         var watchRedPacket: Boolean = true
+        var watchRockPaperScissorsMaxMoney: Int = 32
         var messageQueue: List<MessageQueue> = emptyList()
 
         enum class MessageType {

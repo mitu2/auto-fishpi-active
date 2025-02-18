@@ -57,7 +57,7 @@ jobs:
     enable: true
     cron: 0 0/5 * * * ?
     # 启动是否立即执行
-    start-execute: true
+    start-execute: false
 community:
   newcomer-welcome-messages:
     - 欢迎欢迎
@@ -68,6 +68,8 @@ chat-room:
   client-id: Other/<Mitu2 Technology>
   # 是否自动抢红包
   watch-red-packet: true
+  # 猜拳多少随机猜
+  watch-rock-paper-scissors-max-money: 256
   # 消息队列 (关联 AutoLikeArticleJob)
   message-queue:
     # 每日只发送一次条件
