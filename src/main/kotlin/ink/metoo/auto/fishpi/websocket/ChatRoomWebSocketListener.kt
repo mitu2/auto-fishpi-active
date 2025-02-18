@@ -75,7 +75,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                                 )
                             )
                             Log.info("发送猜拳红包 ${result.code}")
-                        }, 0L, TimeUnit.SECONDS.toMillis(30L))
+                        }, 0L, TimeUnit.SECONDS.toMillis(31L))
                     }
                 }
             }
