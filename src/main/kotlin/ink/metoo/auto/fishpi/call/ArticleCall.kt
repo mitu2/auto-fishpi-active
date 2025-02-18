@@ -157,13 +157,22 @@ object ArticleCall {
         )
     )
 
+    fun getArticlesByTag(tag: String, typePath: String? = null, p: Int = 1, size: Int = 1) = Requests.sendGetRequest<ArticlesResult>(
+        "/api/articles/tag/${tag}${typePath?.let { "/$it" } ?: ""}",
+        arrayOf(
+            "apiKey" to ClientCaches.apiKey,
+            "p" to p.toString(),
+            "size" to size.toString()
+        )
+    )
+
+
     class ArticleResult : AbstractBaseResult() {
 
         var data: Data? = null
 
         class Data {
             var article: JsonObject? = null
-            var pagination: Pagination = Pagination()
         }
 
     }
@@ -180,7 +189,7 @@ object ArticleCall {
     }
 
     class LikeArticleResult {
-        var code : Int? = null
+        var code: Int? = null
         var type: Int? = null
     }
 

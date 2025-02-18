@@ -25,7 +25,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                 val content = message.content ?: return
                 if (content.startsWith("{") && content.endsWith("}")) {
                     val contentJson = gson.fromJson(content, JsonObject::class.java)
-                    Log.debug("websocket ${message.userName} json message: $content")
+                    Log.debug("websocket ${message.userName} json message: $text")
                     when (contentJson.get("msgType").asString) {
                         "redPacket" -> if (Settings.chatRoom.watchRedPacket) {
                             doRedPacket(message, gson.fromJson(contentJson, RedPacket::class.java))
@@ -94,7 +94,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
             }
 
             "rockPaperScissors" -> {
-
+//                println(Gson().toJson(ChatRoomCall.openRedPacket(message.oId!!, "0.1")))
             }
         }
     }

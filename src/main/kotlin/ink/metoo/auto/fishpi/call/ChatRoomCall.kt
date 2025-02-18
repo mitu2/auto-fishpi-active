@@ -80,6 +80,7 @@ object ChatRoomCall {
             var userName: String? = null
             // ...
         }
+
         var info: Info? = null
         var recivers: List<String> = emptyList()
         var who: List<RedPacket.User> = emptyList()
@@ -93,6 +94,11 @@ object ChatRoomCall {
             it.gesture = gesture
             it
         }
+    )
+
+    fun getMessageRaw(oId: String) = Requests.sendGetRequest<String>(
+        path = "/cr/raw/${oId}",
+        queryParams = arrayOf(Pair("apiKey", ClientCaches.apiKey))
     )
 
 }

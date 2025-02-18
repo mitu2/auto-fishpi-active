@@ -13,12 +13,14 @@ class AutoReadArticleJob : Job {
         val maxRead = 20
         var read = 0
         var p = 1
+        var maxP = 10
         // 重试次数 预防无限循环
         var retryCount = 5
-        while (maxRead > read && retryCount > 0) {
+        while (maxRead > read && retryCount > 0 && p <= maxP) {
             try {
-                ArticleCall.getArticles(p = p, size = 5).data?.let { article ->
-                    article.articles.forEach { at ->
+                ArticleCall.getArticles(p = p, size = 5).data?.let { data ->
+                    maxP = data.pagination.paginationPageCount
+                    data.articles.forEach { at ->
                         ArticleCall.getArticle(at.oId).data?.article?.let { ad ->
                             val comments = ad
                                 .getAsJsonArray("articleComments")

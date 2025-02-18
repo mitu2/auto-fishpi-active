@@ -87,8 +87,16 @@ object Requests {
             }
             block()
         }
+        return asJson(call, clazz)
+    }
+
+    private fun <T : Any> asJson(call: Call, clazz: KClass<T>): T {
         val response = call.execute()
         val bodyString = response.body?.string() ?: throw RuntimeException("response body is null")
+        if (clazz == String::class) {
+            @Suppress("UNCHECKED_CAST")
+            return bodyString as T
+        }
         return gson.fromJson(bodyString, clazz.java)
     }
 
@@ -120,9 +128,7 @@ object Requests {
             url(url)
             block()
         }
-        val response = call.execute()
-        val bodyString = response.body?.string() ?: throw RuntimeException("response body is null")
-        return gson.fromJson(bodyString, clazz.java)
+        return asJson(call, clazz)
     }
 
     inline fun <reified T : Any> sendGetRequest(

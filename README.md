@@ -9,6 +9,7 @@
 1. clone当前项目(`git clone` this repo)
 2. git pull 更新
 3. 自定义`src/main/resources/setting.yml`(里面有详细注释, 又可以不修改)
+   1. 如果是直接下载的jar包可用zip压缩工具打开找到`setting.yml`文件编辑后再放回去
 
 ### 直接运行法
 
@@ -24,8 +25,8 @@
 
 ## 它能帮你干什么
 
-1. 抢红包 发专属指令红包 (发红包 name money message)
-2. 领取昨日活跃度
-3. 触发一些机器人的奖励
-4. 去阅读文章的活跃度 (某种意义上变相的每日签到)
-5. 其他
+1. 自动评论 (目前只是监听 新人报到 词条) 参考`setting.yml`中的`community.newcomer-welcome-messages`和 `jobs[name='auto-comment-article-job']` 配置项
+2. 领取昨日活跃度奖励 参考`setting.yml`中的`jobs[name='receive-rewards-daily-job']` 配置项
+3. 聊天室发送消息 **此配置默认并未配置（谨慎配置）** 参考`setting.yml`中的`jobs[name='auto-send-message-job']` 配置项`
+4. 自动去阅读文章 参考`setting.yml`中的`jobs[name='auto-read-article-job']` 配置项
+5. 自动点赞文章 参考`setting.yml`中的`jobs[name='auto-like-article-job']` 配置项

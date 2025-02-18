@@ -44,10 +44,18 @@ object Settings {
     val jobs: List<Job>
         get() = setting.jobs!!
 
+    val community: Community
+        get() = setting.community!!
+
     class Setting {
         var fishpiClient: Client? = null
         var chatRoom: ChatRoom? = null
         var jobs: List<Job>? = null
+        var community: Community? = null
+    }
+
+    class Community {
+        var newcomerWelcomeMessages: List<String> = emptyList()
     }
 
     class Job {
