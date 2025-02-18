@@ -21,6 +21,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         val message = gson.fromJson(text, Message::class.java)
+        val isMe = message.userName == Settings.fishpiClient.username
         when (message.type) {
             "msg" -> {
                 val content = message.content ?: return
@@ -29,12 +30,11 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                     Log.debug("websocket ${message.userName} json message: $text")
                     when (contentJson.get("msgType").asString) {
                         "redPacket" -> if (Settings.chatRoom.watchRedPacket) {
-                            doRedPacket(message, gson.fromJson(contentJson, RedPacket::class.java))
+                            doRedPacket(message, gson.fromJson(contentJson, RedPacket::class.java), isMe)
                         }
                     }
                 } else {
                     val md = message.md ?: return
-                    val isMe = message.userName == Settings.fishpiClient.username
                     if (md.startsWith("发红包") && isMe) {
                         val params = md.split(regex = "[ \n]".toPattern())
                         val name = params.getOrNull(1) ?: return
@@ -86,7 +86,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
         Log.error("websocket fail", t)
     }
 
-    private fun doRedPacket(message: Message, redPacket: RedPacket) {
+    private fun doRedPacket(message: Message, redPacket: RedPacket, isMe: Boolean) {
         if (redPacket.count <= redPacket.got) {
             // 红包已领完 就不凑热闹了
             return
@@ -123,7 +123,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
             }
 
             "rockPaperScissors" -> {
-                if (redPacket.money <= Settings.chatRoom.watchRockPaperScissorsMaxMoney) {
+                if (!isMe && redPacket.money <= Settings.chatRoom.watchRockPaperScissorsMaxMoney) {
                     val result = ChatRoomCall.openRedPacket(message.oId!!, gesture = (0..1).random().toString())
                     val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                     if (me == null) {
