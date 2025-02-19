@@ -1,7 +1,6 @@
 package ink.metoo.auto.fishpi
 
 import ink.metoo.auto.fishpi.job.AutoJobs
-import ink.metoo.auto.fishpi.websocket.ChatRooms
 
 object Main {
     fun isJar(): Boolean {
@@ -19,7 +18,6 @@ fun main() {
         Settings.fishpiClient.mfaCode = console.readLine("请输入鱼排二级认证(没有回车): ")
     }
     AutoJobs.init()
-    ChatRooms.run()
 }
 
 

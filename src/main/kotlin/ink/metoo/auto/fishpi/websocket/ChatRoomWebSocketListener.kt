@@ -19,6 +19,14 @@ class ChatRoomWebSocketListener : WebSocketListener() {
     private val timer = Timer()
     private var isRockPaperScissorsIng = false
 
+    override fun onOpen(webSocket: WebSocket, response: Response) {
+        Log.info("chatroom ${webSocket.request().url} open.")
+    }
+
+    override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+        Log.info("chatroom ${webSocket.request().url} closed. code: $code reason: $reason")
+    }
+
     override fun onMessage(webSocket: WebSocket, text: String) {
         val message = gson.fromJson(text, Message::class.java)
         val isMe = message.userName == Settings.fishpiClient.username
@@ -27,7 +35,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
                 val content = message.content ?: return
                 if (content.startsWith("{") && content.endsWith("}")) {
                     val contentJson = gson.fromJson(content, JsonObject::class.java)
-                    Log.debug("websocket ${message.userName} json message: $text")
+                    Log.debug("chatroom ${message.userName} json message: $text")
                     when (contentJson.get("msgType").asString) {
                         "redPacket" -> if (Settings.chatRoom.watchRedPacket) {
                             doRedPacket(message, gson.fromJson(contentJson, RedPacket::class.java), isMe)
@@ -83,7 +91,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        Log.error("websocket fail", t)
+        Log.error("chatroom webSocket fail", t)
     }
 
     private fun doRedPacket(message: Message, redPacket: RedPacket, isMe: Boolean) {

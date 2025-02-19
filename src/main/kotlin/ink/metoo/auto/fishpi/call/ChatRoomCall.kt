@@ -28,7 +28,7 @@ object ChatRoomCall {
     )
 
     fun watchChatRoom(listener: WebSocketListener) = Requests.watchWebSocket(
-        url = ClientCaches.webSocketUrl,
+        url = getChatRoomNode().data ?: throw RuntimeException("get webSocketUrl fail"),
         listener = listener
     )
 

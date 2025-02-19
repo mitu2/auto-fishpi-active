@@ -8,6 +8,24 @@ fishpi-client:
   # 二次认证 如有在填写
   # mfaCode: You mfaCode
 jobs:
+  # 聊天室任务
+  - name: chatroom-keep-alive-Job
+    target: ink.metoo.auto.fishpi.job.ChatRoomKeepAliveJob
+    # 是否启动 true 启动 false 关闭 (如关闭这个会可能导致其他Job失效)
+    enable: true
+    # 每1分钟监听一次
+    cron: 0 0/1 * * * ?
+    # 启动是否立即执行
+    start-execute: true
+  # 监听活跃度任务
+  - name: watch-liveness-job
+    target: ink.metoo.auto.fishpi.job.WatchLivenessJob
+    # 是否启动 true 启动 false 关闭 (如关闭这个会可能导致其他Job失效)
+    enable: true
+    # 每30秒监听一次
+    cron: 0/30 * * * * ?
+    # 启动是否立即执行
+    start-execute: false
   # 领取昨日活跃任务
   - name: receive-rewards-daily-job
     target: ink.metoo.auto.fishpi.job.ReceiveRewardsDailyJob
@@ -17,16 +35,7 @@ jobs:
     cron: 0 0 9 * * ?
     # 启动是否立即执行
     start-execute: true
-  # 监听活跃度
-  - name: watch-liveness-job
-    target: ink.metoo.auto.fishpi.job.WatchLivenessJob
-    # 是否启动 true 启动 false 关闭 (如关闭这个会可能导致其他Job失效)
-    enable: true
-    # 每30秒监听一次
-    cron: 0/30 * * * * ?
-    # 启动是否立即执行
-    start-execute: false
-  # 自动发送消息
+  # 自动发送消息任务
   - name: auto-send-message-job
     target: ink.metoo.auto.fishpi.job.AutoSendMessageJob
     # 是否启动 true 启动 false 关闭
@@ -35,7 +44,7 @@ jobs:
     cron: 0 0/10 9-18 * * ?
     # 启动是否立即执行
     start-execute: false
-  # 自动阅读文章 (15活跃度)
+  # 自动阅读文章任务 (15活跃度)
   - name: auto-read-article-job
     target: ink.metoo.auto.fishpi.job.AutoReadArticleJob
     enable: true
@@ -43,7 +52,7 @@ jobs:
     cron: 0 0 10 * * ?
     # 启动是否立即执行
     start-execute: false
-  # 自动点赞文章 （6 活跃度）
+  # 自动点赞文章任务 （6 活跃度）
   - name: auto-like-article-job
     target: ink.metoo.auto.fishpi.job.AutoLikeArticleJob
     enable: true
@@ -51,7 +60,7 @@ jobs:
     cron: 0 10 10 * * ?
     # 启动是否立即执行
     start-execute: false
-  # 自动评论文章
+  # 自动评论文章任务
   - name: auto-comment-article-job
     target: ink.metoo.auto.fishpi.job.AutoCommentArticleJob
     enable: true

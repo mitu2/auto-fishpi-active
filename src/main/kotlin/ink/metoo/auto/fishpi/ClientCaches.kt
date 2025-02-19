@@ -20,9 +20,6 @@ object ClientCaches {
     val apiKey: String
         get() = cache.apiKey
 
-    val webSocketUrl: String
-        get() = cache.webSocketUrl
-
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     private val gson = Gson()
 
@@ -91,10 +88,5 @@ class ClientCache(workDir: String) {
             key
         }
     }
-
-    val webSocketUrl: String by lazy {
-        ChatRoomCall.getChatRoomNode().data ?: throw RuntimeException("get webSocketUrl fail")
-    }
-
 
 }

@@ -17,6 +17,7 @@ object Requests {
 
     private val okhttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
+            .retryOnConnectionFailure(true)
             .addInterceptor { chain ->
                 val request = chain.request()
                 val response = chain.proceed(request)
