@@ -8,6 +8,7 @@ object ChatRooms : Runnable {
 
     var ws: WebSocket? = null
 
+    @Synchronized
     override fun run() {
         try {
             ws = ChatRoomCall.watchChatRoom(ChatRoomWebSocketListener())
@@ -17,10 +18,13 @@ object ChatRooms : Runnable {
         }
     }
 
+    @Synchronized
     fun cancel() {
         ws?.cancel()
+        ws = null
     }
 
+    @Synchronized
     fun refresh() {
         cancel()
         run()
