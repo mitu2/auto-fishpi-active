@@ -8,7 +8,7 @@ import java.util.*
 object ChatRooms : Runnable {
 
     var ws: WebSocket? = null
-    val timer = Timer()
+    var timer = Timer()
 
     @Synchronized
     override fun run() {
@@ -25,6 +25,8 @@ object ChatRooms : Runnable {
         ws?.cancel()
         ws = null
         timer.cancel()
+        timer.purge()
+        timer = Timer()
     }
 
     @Synchronized
