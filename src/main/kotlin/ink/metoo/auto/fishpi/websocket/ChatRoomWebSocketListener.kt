@@ -15,7 +15,6 @@ import kotlin.concurrent.timerTask
 class ChatRoomWebSocketListener : WebSocketListener() {
 
     private val gson = Gson()
-    private val timer = Timer()
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.info("chatroom ${webSocket.request().url} open.")
@@ -23,7 +22,11 @@ class ChatRoomWebSocketListener : WebSocketListener() {
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         ChatRooms.cancel()
-        Log.info("chatroom ${webSocket.request().url} closed. code: $code reason: $reason")
+        Log.info("chatroom ${webSocket.request().url} onClosed. code: $code reason: $reason")
+    }
+
+    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+        Log.info("chatroom ${webSocket.request().url} onClosing. code: $code reason: $reason")
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
@@ -50,6 +53,9 @@ class ChatRoomWebSocketListener : WebSocketListener() {
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        if (t is java.io.EOFException) {
+            ChatRooms.cancel()
+        }
         Log.error("chatroom webSocket fail", t)
     }
 
@@ -59,7 +65,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
             return
         }
         when (redPacket.type) {
-            "heartbeat", "random", "average" -> timer.schedule(timerTask {
+            "heartbeat", "random", "average" -> ChatRooms.timer.schedule(timerTask {
                 val result = ChatRoomCall.openRedPacket(message.oId!!)
                 val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                 if (me != null) {
@@ -89,7 +95,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
 
             }
 
-            "rockPaperScissors" -> timer.schedule(timerTask {
+            "rockPaperScissors" -> ChatRooms.timer.schedule(timerTask {
                 if (!isMe && redPacket.money <= Settings.chatRoom.watchRockPaperScissorsMaxMoney) {
                     val result = ChatRoomCall.openRedPacket(message.oId!!, gesture = (0..1).random().toString())
                     val me = result.who.findLast { it.userName == Settings.fishpiClient.username }

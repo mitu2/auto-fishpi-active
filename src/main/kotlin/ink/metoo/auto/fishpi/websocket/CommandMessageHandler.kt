@@ -4,13 +4,11 @@ import ink.metoo.auto.fishpi.Log
 import ink.metoo.auto.fishpi.Settings
 import ink.metoo.auto.fishpi.call.ChatRoomCall
 import org.apache.commons.lang3.math.NumberUtils
-import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timerTask
 
 object CommandMessageHandler {
 
-    private val timer = Timer()
     private var isRockPaperScissorsIng = false
 
     fun handle(message: Message, text: String) {
@@ -40,7 +38,7 @@ object CommandMessageHandler {
             val params = md.split(regex = "[ \n]".toPattern())
             var maxSize = NumberUtils.toInt(params.getOrNull(1), 1).coerceAtLeast(1)
             val money = NumberUtils.toInt(params.getOrNull(2), 32).coerceAtLeast(32)
-            timer.schedule(timerTask {
+            ChatRooms.timer.schedule(timerTask {
                 if (--maxSize < 0) {
                     isRockPaperScissorsIng = false
                     cancel()
