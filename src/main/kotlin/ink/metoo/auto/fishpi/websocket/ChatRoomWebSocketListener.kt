@@ -97,7 +97,7 @@ class ChatRoomWebSocketListener : WebSocketListener() {
 
             "rockPaperScissors" -> ChatRooms.timer.schedule(timerTask {
                 if (!isMe && redPacket.money <= Settings.chatRoom.watchRockPaperScissorsMaxMoney) {
-                    val result = ChatRoomCall.openRedPacket(message.oId!!, gesture = (0..1).random().toString())
+                    val result = ChatRoomCall.openRedPacket(message.oId!!, gesture = (0..2).random().toString())
                     val me = result.who.findLast { it.userName == Settings.fishpiClient.username }
                     if (me == null) {
                         Log.info("未领取到${message.userName}的猜拳红包, 是在下手慢了")
