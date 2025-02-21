@@ -2,7 +2,7 @@ fishpi-client:
   base-url: https://fishpi.cn
   user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0
   # 账号
-  username: mitu2
+  username: You Name
   # 密码
   password: You password
   # 二次认证 如有在填写
@@ -67,11 +67,19 @@ jobs:
     cron: 0 0/5 * * * ?
     # 启动是否立即执行
     start-execute: false
+# 社区相关配置
 community:
-  newcomer-welcome-messages:
-    - 欢迎欢迎
-    - 大佬您来了
-    - Wow, 佬。
+  # 关注的标签
+  watch-tags:
+    - 新人报道
+    - 摸鱼周报
+  # 评论内容
+  comment-texts:
+    - 不错不错
+    - 好好好
+    - 不愧是你
+    - 好好好
+# 聊天室相关配置
 chat-room:
   # 客户端ID
   client-id: Other/<Mitu2 Technology>

@@ -2,30 +2,35 @@
 
 > 该项目只是无聊产物，仅供学习
 
-主要围绕着鱼排的一些接口和触发一些活跃条件，省去每日的一些繁杂事项
+主要围绕着鱼排的一些接口和触发一些活跃条件，省去每日的一些繁杂事项, 帮你每日签到
 
 ## 使用方法
 
 1. clone当前项目(`git clone` this repo)
-2. git pull 更新
-3. 自定义`src/main/resources/setting.yml`(里面有详细注释, 又可以不修改)
-   1. 如果是直接下载的jar包可用zip压缩工具打开找到`setting.yml`文件编辑后再放回去
+2. `git pull -f` 更新
 
-### 直接运行法
+### 直接运行方式
 
-打开idea或者其他ide工具
+打开idea或者其他ide工具运行`MainKt`
 
-### 服务器部署法 (Linux)
+### 扩展运行方式
 
-1. 打包 `mvn clean package`
-2. 进入打包目录 `cd target`
-3. 开一个后台`screen -R auto-fishpi-active`
-4. 运行`java -jar auto-fishpi-active-1.0-jar-with-dependencies.jar`
-5. 输入正确账号密码后即可 `ctrl A + D` 切回
+1. 打包 `mvn clean package -DskipTests`
+2. 进入打包目录 `cd target` （下面任选其一）
+   1. `console`模式运行
+      1. shell 执行 `java -jar auto-fishpi-active-1.0-jar-with-dependencies.jar -console`
+      2. 根据提示输入账号密码
+   2. `command`模式运行
+      1. shell 执行 `java -jar auto-fishpi-active-1.0-jar-with-dependencies.jar -username:[username] -password:[password] -mfaCode:[mfaCode]` （托管即可）
+   3. `init` 模式运行
+      1. shell 执行 `java -jar auto-fishpi-active-1.0-jar-with-dependencies.jar -init` 
+         1. 打开执行的目录下生成一个`setting.yml`文件
+         2. 编辑`fishpi-client`配置项下的`username`, `password`, `mfaCode`
+      2. shell 执行 `java -jar auto-fishpi-active-1.0-jar-with-dependencies.jar` 运行
 
 ## 它能帮你干什么
 
-1. 自动评论 (目前只是监听 新人报到 词条) 参考`setting.yml`中的`community.newcomer-welcome-messages`和 `jobs[name='auto-comment-article-job']` 配置项
+1. 自动评论 参考`setting.yml`中的`community.watch-tags`、 `community.comment-texts`和 `jobs[name='auto-comment-article-job']` 配置项
 2. 领取昨日活跃度奖励 参考`setting.yml`中的`jobs[name='receive-rewards-daily-job']` 配置项
 3. 聊天室发送消息 **此配置默认并未配置（谨慎配置）** 参考`setting.yml`中的`jobs[name='auto-send-message-job']` 配置项`
 4. 自动去阅读文章 参考`setting.yml`中的`jobs[name='auto-read-article-job']` 配置项

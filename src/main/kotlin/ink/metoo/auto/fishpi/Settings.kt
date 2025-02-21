@@ -5,6 +5,7 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import org.yaml.snakeyaml.introspector.Property
 import org.yaml.snakeyaml.introspector.PropertyUtils
+import java.io.File
 import java.util.*
 import java.util.stream.Collectors
 
@@ -32,8 +33,25 @@ object Settings {
     }
 
     val setting: Setting by lazy {
-        yaml.loadAs(javaClass.getResourceAsStream("/setting.yml"), Setting::class.java)
+        yaml.loadAs(
+            if (localSettingExists) settingFile.inputStream() else javaClass.getResourceAsStream("/setting.yml"),
+            Setting::class.java
+        )
     }
+
+    val localSettingExists: Boolean
+        get() = settingFile.exists()
+
+    fun initSettingFile() {
+        if (localSettingExists) {
+            return
+        }
+        javaClass.getResourceAsStream("/setting.yml")?.copyTo(settingFile.outputStream())
+        Log.info("init setting file to $settingFile")
+    }
+
+    private val settingFile: File
+        get() = File("${System.getProperty("user.dir")}/setting.yml")
 
     val fishpiClient: Client
         get() = setting.fishpiClient!!
@@ -55,7 +73,8 @@ object Settings {
     }
 
     class Community {
-        var newcomerWelcomeMessages: List<String> = emptyList()
+        var watchTags: List<String> = emptyList()
+        var commentTexts: List<String> = emptyList()
     }
 
     class Job {
